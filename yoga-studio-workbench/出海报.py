@@ -12,7 +12,14 @@ import json
 import os
 import sys
 
-from PIL import Image, ImageDraw, ImageFont
+try:
+    from PIL import Image, ImageDraw, ImageFont
+except ImportError:
+    sys.exit(
+        "缺「Pillow」这个包，出不了海报图。\n"
+        "补法：在命令行里跑这一条 ——  python -m pip install Pillow\n"
+        "（装完重跑即可；拿不准就把这句话发给你正在用的 AI 助手。注意只装 Pillow，别去装那个叫 PIL 的老包。）"
+    )
 
 FONTS = {
     "regular": "C:/Windows/Fonts/msyh.ttc",

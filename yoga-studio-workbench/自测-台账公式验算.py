@@ -4,9 +4,17 @@ import datetime
 import os
 import sys
 
-from openpyxl import load_workbook
+try:
+    from openpyxl import load_workbook
+except ImportError:
+    sys.exit(
+        "（这是内部自测脚本，老板不用跑）缺「openpyxl」这个包，验算不了台账公式。\n"
+        "补法：python -m pip install openpyxl"
+    )
 
-XLSX = sys.argv[1] if len(sys.argv) > 1 else "C:/Users/Admin/.workbuddy/scratch/验算台账.xlsx"
+# 基准台账路径：可传参覆盖；不传就用同目录下的 台账.xlsx（不要写死某台机器的路径）
+_def = os.path.join(os.path.dirname(os.path.abspath(__file__)), "台账.xlsx")
+XLSX = sys.argv[1] if len(sys.argv) > 1 else _def
 TODAY = datetime.date(2026, 10, 5)
 
 CASES = [
@@ -46,7 +54,14 @@ wb.save(tmp)
 # 计算引擎认的是临时文件名——从 tmp 推，别写死
 BOOK = os.path.splitext(os.path.basename(tmp))[0]
 
-import formulas
+try:
+    import formulas
+except ImportError:
+    sys.exit(
+        "（这是内部自测脚本，老板不用跑）缺「formulas」这个包，算不了 Excel 公式。\n"
+        "补法：python -m pip install formulas\n"
+        "（formulas 只有这份自测脚本才用得到；老板平时用不到它。）"
+    )
 xl = formulas.ExcelModel().loads(tmp).finish()
 sol = xl.calculate()
 

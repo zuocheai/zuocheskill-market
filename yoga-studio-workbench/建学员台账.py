@@ -13,11 +13,18 @@
 import os
 import sys
 
-from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-from openpyxl.utils import get_column_letter
-from openpyxl.worksheet.datavalidation import DataValidation
-from openpyxl.formatting.rule import FormulaRule
+try:
+    from openpyxl import Workbook
+    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+    from openpyxl.utils import get_column_letter
+    from openpyxl.worksheet.datavalidation import DataValidation
+    from openpyxl.formatting.rule import FormulaRule
+except ImportError:
+    sys.exit(
+        "缺「openpyxl」这个包，做不了学员台账表。\n"
+        "补法：在命令行里跑这一条 ——  python -m pip install openpyxl\n"
+        "（装完重跑本脚本即可；拿不准怎么跑，就把这句话发给你正在用的 AI 助手，让它帮你装。）"
+    )
 
 DEFAULT_OUT = os.path.expanduser("~/Documents/瑜伽工作台/学员台账.xlsx")
 
